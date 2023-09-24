@@ -13,8 +13,11 @@
 62:<a href="#62"> 不同路径 </a> m  
 69:<a href="#69"> x的平方根 </a> e  
 73:<a href="#73"> 矩阵置0 </a> m  
-120:<a href="#120"> 三角形最短路径 </a>m
+77:<a href="#77"> 组合 </a> m  
+91:<a href="#91"> 解码方法 </a> m  
+120:<a href="#120"> 三角形最短路径 </a> m  
 136:<a href="#136"> 只出现一次得数 </a> e  
+146:<a href="#146"> LRUCache </a> m  
 209:<a href="#209"> 长度最小的子数组 </a>m  
 
 
@@ -138,11 +141,23 @@ x范围是0~2^31-1
 
 
 
-<h2 id="136">136:只出现一次的数</h2>
-难度:简单
-<h3>思路:</h3>
-1. 用一个hashSet,遍历并在set中查,查到则删除,没查到则放入.最后set中只剩一个值
-2. 异或算法,全部异或起来
+<h2 id="77"> 77:  组合 </h2>
+
+难度:中等  
+思路:  
+要深刻体会dfs,  
+要选择ArrayList,而不是LinkedList,因为经常要使用list的size  
+
+
+
+<h2 id="91"> 91:  解码方法 </h2>
+
+难度:中等  
+思路:  
+当s.charAt(i)不为0,f(i)+=f(i-1);即在原本的组合上新加上第i位独自组成的码  
+i-1,i组成的数<26时
+- 当s.charAt(i-1)为0时,不变(第i-1位和第i位无法组成一个码)
+- 当i-1位不为0时,且i-1位和i位组成的数<=26时,f(i)+=f(i-2)(第i-1位和第i位可以组成一个码)
 
 
 
@@ -152,6 +167,46 @@ x范围是0~2^31-1
 不要从上往下递归,会重复计算.  
 逆向思维,从下往上计算,同时记录一下就可以.
 
+
+
+<h2 id="136">136:只出现一次的数</h2>
+难度:简单
+<h3>思路:</h3>
+1. 用一个hashSet,遍历并在set中查,查到则删除,没查到则放入.最后set中只剩一个值
+2. 异或算法,全部异或起来
+
+
+
+<h2 id="146">146:LRU缓存</h2>
+难度:中等
+<h3>要求:</h3>
+get和put时间复杂度都是O(1)
+<h3>思路:</h3>
+- get时间复杂度为O(1):用hashmap即可,key是key,我们需要的value在Map的value中
+- put时间复杂度O(1):用hashMap去remove时间较久,添加时间也较久.  
+  使用双向链表:(因此map中的value是节点)
+  - remove时,直接remove最后面的.(用一个虚拟tail即可马上搜到),同时要在map中删除,所以由节点能得到key
+  - insert时,直接插到最前面(用一个虚拟head即可),
+  
+~~~java
+private class MapNode{
+        int key;
+        int value;
+        MapNode prev;
+        MapNode next;
+        public MapNode() {}
+        public MapNode(int key,int value){
+            this.key=key;
+            this.value=value;
+        }
+    }
+
+    private HashMap<Integer,MapNode> linkedMap;
+    private MapNode head;
+    private MapNode tail;
+    private int capacity;
+    private int size;
+~~~
 
 
 <h2 id="209">209: 长度最小的子数组 </h2>
