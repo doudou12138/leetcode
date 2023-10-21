@@ -29,6 +29,8 @@
 210:<a href="#210"> 课程表2 </a>m  
 605:<a href="#605"> 种花问题 </a> e  
 1488:<a href="#1488"> 避免洪水泛滥 </a> m  
+1726:<a href="#1726"> 同积元组 </a>  
+2316:<a href="#2316"> 统计无向图中无法互相到达点对数 </a>  
 2512:<a href="#2512"> 最优秀的k位同学 </a> m  
 2530:<a href="#2530"> 执行k次操作后的最大分数</a> m  
 2562:<a href="#2562"> 找到数组的串联值 </a> e  
@@ -368,6 +370,61 @@ dfs中,取一个未搜索节点,进行搜索,对每一个节点,设其状态为�
 对于晴天的日子,使用**TreeSet**记录日子,以备检测到两次下雨时应用    
 对于下雨的日子,使用HashMap记录下标(日子)和湖泊编号  
 当发现已经记录了该湖泊时则需要找到一个在第二次下雨前(有排序需求,所以用treeSet)的晴天抽水  
+
+
+
+<h2 id="1726">1726:同积元组 </h2>
+难度:中等   
+思路:  
+找到元组(a,b,c,d),b*c=a*d.  **HashMap+动态规划**  
+使用HashMap表示能达成的积  
+遍历nums,对每个数,再遍历其前面的数,相乘得积s,去HashMap中get
+- 如果为null,说明前面还没有两个数乘积为s
+- 如果不为null,为x,说明前面有x个数对(b,c),b\*c=x;那么就新增元组x\*8个.
+
+
+
+<h2 id="2316">2316:统计无向图中无法互相到达点个数 </h2>
+难度:中等    
+思路:  
+1. 并查集:(适用于图中的连通性问题(分区域))  
+  UnionFind类需自己实现:  
+  使用一个数组就可以,当然可以相关功能去添加一些成员变量以提高速度
+   (注意做好路径压缩)
+  ~~~java
+  class UnionFind(){
+    int[] pres;
+    
+    public UnionFind(int cap){
+        pres=new int[cap];
+        for(int i=0;i<cap;++i){
+            pres[i]=i;
+        }
+    }
+    
+    public int find(int i){
+        if(pres[i]==i){
+            return i;
+        }
+        //路径压缩
+        pres[i]=find(pres[i]);
+        /*
+                不压缩
+                return find(pres[i]);
+         */
+        return pres[i];
+    }
+    
+    public void join(int x,int y){
+        int fx=find(x);
+        int fy=find(y);
+        pres[fx]=fy;
+    }
+    
+}
+  ~~~
+
+2. 深度优先搜索
 
 
 
